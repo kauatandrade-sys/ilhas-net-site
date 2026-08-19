@@ -110,7 +110,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
     padding: 0 var(--gutter);
 }
 
-.text-gold { color: var(--color-gold); font-style: italic; }
+.text-gold { color: var(--color-gold); }
 
 /* obs. TIPOGRAFIA */
 h1, h2, h3, h4 {
@@ -260,12 +260,13 @@ h1, h2, h3, h4 {
 .brand-name em { color: var(--color-gold); font-style: normal; }
 .brand-slogan {
     font-family: var(--font-sans);
-    font-size: 0.58rem;
-    font-weight: 600;
-    letter-spacing: 0.18em;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
     color: var(--color-gold);
     text-transform: uppercase;
-    opacity: 0.95;
+    font-style: normal;
+    opacity: 1;
 }
 .navbar.scrolled .brand-slogan { color: var(--color-gold); }
 
