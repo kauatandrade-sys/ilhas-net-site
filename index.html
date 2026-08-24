@@ -9,8 +9,36 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="styles.css" />
+    <script>
+        // Evita o "flash" da tela de boas-vindas em quem já viu nesta sessão
+        try {
+            if (sessionStorage.getItem('ilhasnetIntroSeen') === '1') {
+                document.documentElement.classList.add('no-intro');
+            }
+        } catch (e) {}
+    </script>
 </head>
 <body>
+
+    <div class="intro-overlay" id="introOverlay" aria-hidden="true">
+        <div class="intro-glow" aria-hidden="true"></div>
+        <div class="intro-content">
+            <span class="intro-eyebrow">Ilhas Net</span>
+            <h2 class="intro-title" aria-hidden="true">
+                <span class="intro-letter" style="--i:0">B</span>
+                <span class="intro-letter" style="--i:1">e</span>
+                <span class="intro-letter" style="--i:2">m</span>
+                <span class="intro-letter" style="--i:3">-</span>
+                <span class="intro-letter" style="--i:4">v</span>
+                <span class="intro-letter" style="--i:5">i</span>
+                <span class="intro-letter" style="--i:6">n</span>
+                <span class="intro-letter" style="--i:7">d</span>
+                <span class="intro-letter" style="--i:8">o</span>
+                <span class="intro-letter" style="--i:9">s</span>
+            </h2>
+            <span class="intro-line" aria-hidden="true"></span>
+        </div>
+    </div>
 
     <header class="navbar" id="navbar">
         <div class="container nav-container">
@@ -75,25 +103,25 @@
                 estratégicos do estado do Pará — com o suporte que você merece.
             </p>
 
-            <!-- Carrossel de planos -->
+            <!-- linha de planos -->
             <div class="plans-carousel" id="plansCarousel" aria-roledescription="carousel" aria-label="Planos Ilhas Net">
                 <div class="carousel-viewport">
                     <div class="carousel-track" id="carouselTrack">
 
-                        <!-- Card 1 — 400 Mega -->
+                        <!-- Card 1 -->
                         <article class="pcard" aria-roledescription="slide" aria-label="Plano 400 Mega">
                             <span class="pcard-badge pcard-badge--oferta">Oferta</span>
                             <header class="pcard-head">
                                 <span class="pcard-eyebrow">Residencial</span>
-                                <h3 class="pcard-name">400MEGAS- MAX</h3>
+                                <h3 class="pcard-name">400MB- MAX</h3>
                             </header>
                             <div class="pcard-speed">
                                 <span class="pcard-speed-num">400</span>
-                                <span class="pcard-speed-unit">Megas</span>
+                                <span class="pcard-speed-unit">MB  </span>
                             </div>
                             <p class="pcard-speed-desc">Fibra óptica full · Wi-Fi 6 incluso</p>
                             <ul class="pcard-benefits">
-                                <li>Upload de 200 Megas</li>
+                                <li>Upload de 200 MB</li>
                                 <li>Instalação R$ 49,99</li>
                                 <li>Suporte 24H</li>
                             </ul>
@@ -103,19 +131,19 @@
                             <a href="https://wa.me/559133110041?text=Ol%C3%A1!%20Tenho%20interesse%20em%20contratar%20um%20plano%20da%20Ilhas%20Net.%20Gostaria%20de%20mais%20informa%C3%A7%C3%B5es." target="_blank" rel="noopener noreferrer" class="btn btn-gold pcard-cta">Contratar</a>
                         </article>
 
-                        <!-- Card 2 — 600 Mega -->
+                        <!-- Card 2-->
                         <article class="pcard" aria-roledescription="slide" aria-label="Plano 600 Mega">
                             <header class="pcard-head">
                                 <span class="pcard-eyebrow">Residencial</span>
-                                <h3 class="pcard-name">600MEGAS- MAX</h3>
+                                <h3 class="pcard-name">600MB- MAX</h3>
                             </header>
                             <div class="pcard-speed">
                                 <span class="pcard-speed-num">600</span>
-                                <span class="pcard-speed-unit">Mega</span>
+                                <span class="pcard-speed-unit">MB  </span>
                             </div>
                             <p class="pcard-speed-desc">Ideal para streaming 4K e home office</p>
                             <ul class="pcard-benefits">
-                                <li>Upload de 300 Mega</li>
+                                <li>Upload de 300 MB</li>
                                 <li>Roteador Wi-Fi 6 premium</li>
                                 <li>IP fixo opcional</li>
                             </ul>
@@ -125,20 +153,20 @@
                             <a href="https://wa.me/559133110041?text=Ol%C3%A1!%20Tenho%20interesse%20em%20contratar%20um%20plano%20da%20Ilhas%20Net.%20Gostaria%20de%20mais%20informa%C3%A7%C3%B5es." target="_blank" rel="noopener noreferrer" class="btn btn-gold pcard-cta">Contratar</a>
                         </article>
 
-                        <!-- Card 3 — 800 Mega -->
+                        <!-- Card 3 -->
                         <article class="pcard pcard--featured" aria-roledescription="slide" aria-label="Plano 800 Mega — Mais Vendido">
                             <span class="pcard-badge pcard-badge--best">Mais Vendido</span>
                             <header class="pcard-head">
                                 <span class="pcard-eyebrow pcard-eyebrow--gold">Residencial Premium</span>
-                                <h3 class="pcard-name">800 MEGAS-MAX</h3>
+                                <h3 class="pcard-name">800 MB-MAX</h3>
                             </header>
                             <div class="pcard-speed">
                                 <span class="pcard-speed-num">800</span>
-                                <span class="pcard-speed-unit">Mega</span>
+                                <span class="pcard-speed-unit">MB  </span>
                             </div>
                             <p class="pcard-speed-desc">Velocidade e estabilidade para toda a família</p>
                             <ul class="pcard-benefits">
-                                <li>Upload de 400 Mega</li>
+                                <li>Upload de 400 MB    </li>
                                 <li>Mesh Wi-Fi 6 incluso</li>
                                 <li>Streaming + TV digital</li>
                             </ul>
@@ -155,15 +183,15 @@
                             <span class="pcard-badge pcard-badge--new">Novo</span>
                             <header class="pcard-head">
                                 <span class="pcard-eyebrow">Residencial Ultra</span>
-                                <h3 class="pcard-name">1000 MEGA-Black WIFI 6</h3>
+                                <h3 class="pcard-name">1000 MB-Black WIFI 6</h3>
                             </header>
                             <div class="pcard-speed">
                                 <span class="pcard-speed-num">1000</span>
-                                <span class="pcard-speed-unit">Megas</span>
+                                <span class="pcard-speed-unit">MB</span>
                             </div>
                             <p class="pcard-speed-desc">Performance máxima para games e criadores</p>
                             <ul class="pcard-benefits">
-                                <li>Upload de 500 Mega</li>
+                                <li>Upload de 500 MB</li>
                                 <li>Mesh Wi-Fi 6E duplo</li>
                                 <li>Atendimento VIP</li>
                             </ul>
@@ -173,19 +201,19 @@
                             <a href="https://wa.me/559133110041?text=Ol%C3%A1!%20Tenho%20interesse%20em%20contratar%20um%20plano%20da%20Ilhas%20Net.%20Gostaria%20de%20mais%20informa%C3%A7%C3%B5es." target="_blank" rel="noopener noreferrer" class="btn btn-gold pcard-cta">Contratar</a>
                         </article>
 
-                        <!-- Card 5 — 900 MEGAS -->
+                        <!-- Card 5-->
                         <article class="pcard" aria-roledescription="slide" aria-label="Plano 900 Mega">
                             <header class="pcard-head">
                                 <span class="pcard-eyebrow">Residencial Black</span>
-                                <h3 class="pcard-name">900 MEGAS- BLACK WIFI 6</h3>
+                                <h3 class="pcard-name">900 MB- BLACK WIFI 6</h3>
                             </header>
                             <div class="pcard-speed">
                                 <span class="pcard-speed-num">900</span>
-                                <span class="pcard-speed-unit">Megas</span>
+                                <span class="pcard-speed-unit">MB</span>
                             </div>
                             <p class="pcard-speed-desc">Performance máxima para games e criadores</p>
                             <ul class="pcard-benefits">
-                                <li>Upload de 450 Mega</li>
+                                <li>Upload de 450 MB</li>
                                 <li>Mesh Wi-Fi 6 incluso</li>
                                 <li>Atendimento VIP</li>
                             </ul>
@@ -199,15 +227,15 @@
                         <article class="pcard" aria-roledescription="slide" aria-label="Plano 200 Mega">
                             <header class="pcard-head">
                                 <span class="pcard-eyebrow">Residencial Smart</span>
-                                <h3 class="pcard-name">200MEGAS- SMART</h3>
+                                <h3 class="pcard-name">200MB- SMART</h3>
                             </header>
                             <div class="pcard-speed">
                                 <span class="pcard-speed-num">200</span>
-                                <span class="pcard-speed-unit">Megas</span>
+                                <span class="pcard-speed-unit">MB</span>
                             </div>
                             <p class="pcard-speed-desc">Ideal para uso doméstico e redes sociais</p>
                             <ul class="pcard-benefits">
-                                <li>Upload de 100 Megas</li>
+                                <li>Upload de 100 MB</li>
                                 <li>Roteador Wi-Fi incluso</li>
                                 <li>Suporte 24H</li>
                             </ul>
@@ -221,15 +249,15 @@
                         <article class="pcard" aria-roledescription="slide" aria-label="Plano 50 Mega">
                             <header class="pcard-head">
                                 <span class="pcard-eyebrow">Residencial Smart</span>
-                                <h3 class="pcard-name">50MEGAS- SMART</h3>
+                                <h3 class="pcard-name">50MB- SMART</h3>
                             </header>
                             <div class="pcard-speed">
                                 <span class="pcard-speed-num">50</span>
-                                <span class="pcard-speed-unit">Megas</span>
+                                <span class="pcard-speed-unit">MB</span>
                             </div>
                             <p class="pcard-speed-desc">Conexão confiável para o dia a dia</p>
                             <ul class="pcard-benefits">
-                                <li>Upload de 25 Megas</li>
+                                <li>Upload de 25 MB</li>
                                 <li>Roteador Wi-Fi incluso</li>
                                 <li>Suporte 24H</li>
                             </ul>

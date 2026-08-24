@@ -3,6 +3,47 @@
 (function () {
     'use strict';
 
+    // Tela de boas-vindas (letreiro subindo antes do hero)
+    (function initIntro() {
+        const overlay = document.getElementById('introOverlay');
+        if (!overlay) return;
+
+        // Já viu nesta sessão: some sem animar
+        if (document.documentElement.classList.contains('no-intro')) {
+            overlay.remove();
+            return;
+        }
+
+        document.body.classList.add('intro-locked');
+
+        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        let finished = false;
+
+        function finishIntro() {
+            if (finished) return;
+            finished = true;
+            overlay.classList.add('intro-hide');
+            document.body.classList.remove('intro-locked');
+            try { sessionStorage.setItem('ilhasnetIntroSeen', '1'); } catch (e) {}
+            window.setTimeout(() => overlay.remove(), 650);
+        }
+
+        const timer = window.setTimeout(finishIntro, reduceMotion ? 350 : 1750);
+
+        // Clique, toque ou tecla pulam a animação para quem tem pressa
+        overlay.addEventListener('click', () => {
+            window.clearTimeout(timer);
+            finishIntro();
+        });
+        window.addEventListener('keydown', function onKey(e) {
+            if (e.key === 'Enter' || e.key === 'Escape' || e.key === ' ') {
+                window.clearTimeout(timer);
+                finishIntro();
+                window.removeEventListener('keydown', onKey);
+            }
+        });
+    })();
+
     // Navbar scroll effect
     const navbar = document.getElementById('navbar');
     function onScroll() {
@@ -54,9 +95,7 @@
         revealEls.forEach((el) => el.classList.add('visible'));
     }
 
-    // ============================================
     // Carrossel de planos (Hero)
-    // ============================================
     (function initPlansCarousel() {
         const carousel = document.getElementById('plansCarousel');
         const track = document.getElementById('carouselTrack');
