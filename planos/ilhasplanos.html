@@ -219,6 +219,19 @@
   .hbo-banner + .hbo-banner{margin-top:14px;}
   .tv-logo{padding:6px;}
   .tv-logo img{width:100%;height:100%;object-fit:contain;}
+  .hbo-banner--link{cursor:pointer; transition:transform .2s, box-shadow .2s, border-color .2s;}
+  .hbo-banner--link:hover{transform:translateY(-2px); box-shadow:0 10px 25px rgba(242,185,59,0.15); border-color:rgba(242,185,59,0.35);}
+  .hbo-arrow{
+    margin-left:auto;
+    flex-shrink:0;
+    width:40px;height:40px;
+    border-radius:50%;
+    background:rgba(242,185,59,0.12);
+    display:flex;align-items:center;justify-content:center;
+    color:var(--gold-soft);
+    transition:background .2s;
+  }
+  .hbo-banner--link:hover .hbo-arrow{background:rgba(242,185,59,0.22);}
 
   /* PLANS SIDE */
   .hero-right{padding-top:4px;}
@@ -494,6 +507,19 @@
         </div>
         <div class="hbo-logo tv-logo"><img src="../assets/images/logo-ilhas-net.png" alt="Ilhas Net TV" /></div>
       </div>
+
+      <a href="servicos.html" class="hbo-banner hbo-banner--link">
+        <div class="hbo-gift">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1a1200" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+        </div>
+        <div class="hbo-text">
+          <p>Conheça nossos <b>serviços</b></p>
+          <span>Veja tudo o que a Ilhas Net oferece para você.</span>
+        </div>
+        <div class="hbo-arrow">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+        </div>
+      </a>
     </div>
 
     <div class="hero-right">
