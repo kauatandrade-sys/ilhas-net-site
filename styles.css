@@ -602,7 +602,7 @@ h1, h2, h3, h4 {
 .pcard:hover,
 .pcard:focus-within {
     transform: translateY(-6px);
-    box-shadow: var(--shadow-lg);
+    box-shadow: var(--shadow-lg), 0 0 45px rgba(255, 215, 0, 0.85), 0 0 14px rgba(255, 215, 0, 0.6);
     border-color: var(--color-gold);
 }
 

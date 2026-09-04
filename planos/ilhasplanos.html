@@ -237,6 +237,7 @@
   .hero-right{padding-top:4px;}
   .tabs{
     display:inline-flex;
+    position:relative;
     background:rgba(10,20,42,0.7);
     border:1px solid rgba(255,255,255,0.08);
     border-radius:40px;
@@ -244,7 +245,28 @@
     margin-bottom:32px;
     gap:4px;
   }
+  .tabs-indicator{
+    position:absolute;
+    top:0;
+    left:0;
+    width:0;
+    height:0;
+    border-radius:30px;
+    background:linear-gradient(135deg,var(--gold-soft),var(--gold));
+    box-shadow:0 6px 16px rgba(242,185,59,0.28);
+    opacity:0;
+    pointer-events:none;
+    z-index:0;
+    will-change:transform,width,height;
+    transition:transform .5s cubic-bezier(0.34,1.56,0.64,1),
+               width .5s cubic-bezier(0.34,1.56,0.64,1),
+               height .35s ease,
+               opacity .25s ease;
+  }
+  .tabs-indicator.is-ready{ opacity:1; }
   .tabs button{
+    position:relative;
+    z-index:1;
     border:none;
     background:transparent;
     color:var(--text-muted);
@@ -255,10 +277,10 @@
     padding:11px 30px;
     border-radius:30px;
     cursor:pointer;
-    transition:all .25s;
+    transition:color .25s;
   }
   .tabs button.active{
-    background:linear-gradient(135deg,var(--gold-soft),var(--gold));
+    background:transparent;
     color:#1a1200;
   }
   .tabs-wrap{display:flex; justify-content:flex-end;}
@@ -886,10 +908,39 @@
     });
   }
 
+  // Indicador "gota" deslizante nas abas (região e tier)
+  function initTabsIndicator(tabsEl){
+    if (!tabsEl) return function(){};
+    const indicator = document.createElement('span');
+    indicator.className = 'tabs-indicator';
+    tabsEl.insertBefore(indicator, tabsEl.firstChild);
+
+    function position(animate){
+      const active = tabsEl.querySelector('button.active');
+      if (!active) return;
+      if (!animate) indicator.style.transition = 'none';
+      indicator.style.width = active.offsetWidth + 'px';
+      indicator.style.height = active.offsetHeight + 'px';
+      indicator.style.transform = 'translate(' + active.offsetLeft + 'px,' + active.offsetTop + 'px)';
+      if (!animate) {
+        void indicator.offsetWidth; // força reflow
+        requestAnimationFrame(() => { indicator.style.transition = ''; });
+      }
+    }
+
+    position(false);
+    requestAnimationFrame(() => { indicator.classList.add('is-ready'); });
+    return position;
+  }
+
+  const positionRegionIndicator = initTabsIndicator(document.querySelector('.region-tabs'));
+  const positionTierIndicator = initTabsIndicator(document.querySelector('.tier-tabs'));
+
   regionTabs.forEach(btn=>{
     btn.addEventListener('click',()=>{
       regionTabs.forEach(b=>b.classList.remove('active'));
       btn.classList.add('active');
+      positionRegionIndicator(true);
       updatePlansView();
     });
   });
@@ -898,8 +949,18 @@
     btn.addEventListener('click',()=>{
       tierTabs.forEach(b=>b.classList.remove('active'));
       btn.classList.add('active');
+      positionTierIndicator(true);
       updatePlansView();
     });
+  });
+
+  let tabsResizeTimer = null;
+  window.addEventListener('resize', () => {
+    if (tabsResizeTimer) window.clearTimeout(tabsResizeTimer);
+    tabsResizeTimer = window.setTimeout(() => {
+      positionRegionIndicator(false);
+      positionTierIndicator(false);
+    }, 120);
   });
 
   updatePlansView();

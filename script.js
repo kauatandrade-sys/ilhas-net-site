@@ -3,7 +3,7 @@
 (function () {
     'use strict';
 
-    // Tela de boas-vindas (letreiro subindo antes do hero)
+    // Tela de boas-vindas antes do hero)
     (function initIntro() {
         const overlay = document.getElementById('introOverlay');
         if (!overlay) return;
@@ -101,44 +101,30 @@
         const track = document.getElementById('carouselTrack');
         if (!carousel || !track) return;
 
-        const originalCards = Array.from(track.children);
-        if (originalCards.length === 0) return;
+        if (track.children.length === 0) return;
 
-        // Duplica os cards para permitir loop infinito sem saltos
-        originalCards.forEach((card) => {
-            const clone = card.cloneNode(true);
-            clone.setAttribute('aria-hidden', 'true');
-            clone.setAttribute('tabindex', '-1');
-            track.appendChild(clone);
-        });
-
-        let index = 0;
         let autoTimer = null;
         let isHovering = false;
         let isDragging = false;
+        let isAnimating = false;
         let dragStartX = 0;
         let dragDeltaX = 0;
 
-        const AUTO_INTERVAL = 4500; // ms
+        const AUTO_INTERVAL = 2500; // ms (reduzido em 2s)
         const SWIPE_THRESHOLD = 60; // px
 
         function getStepWidth() {
-            const first = originalCards[0];
+            const first = track.children[0];
             const styles = window.getComputedStyle(track);
             const gap = parseFloat(styles.columnGap || styles.gap || '0') || 0;
             return first.getBoundingClientRect().width + gap;
         }
 
-        function applyTransform(animate = true) {
-            if (!animate) {
-                track.style.transition = 'none';
-                // força reflow para aplicar a posição instantânea
+        function resetPosition(withTransition) {
+            if (!withTransition) track.style.transition = 'none';
+            track.style.transform = 'translate3d(0, 0, 0)';
+            if (!withTransition) {
                 void track.offsetWidth;
-            }
-            const step = getStepWidth();
-            track.style.transform = `translate3d(${-index * step}px, 0, 0)`;
-
-            if (!animate) {
                 requestAnimationFrame(() => {
                     track.style.transition = '';
                 });
@@ -146,35 +132,45 @@
         }
 
         function next() {
-            index += 1;
-            applyTransform(true);
+            if (isAnimating || isDragging) return;
+            isAnimating = true;
+            const step = getStepWidth();
+            track.style.transition = '';
+            track.style.transform = `translate3d(${-step}px, 0, 0)`;
+
+            track.addEventListener('transitionend', function onEnd(e) {
+                if (e.propertyName !== 'transform') return;
+                track.removeEventListener('transitionend', onEnd);
+                // O card que já passou vai para o final da fila:
+                // o carrossel continua normalmente, sem voltar ao início.
+                track.appendChild(track.firstElementChild);
+                resetPosition(false);
+                isAnimating = false;
+            });
         }
 
         function prev() {
-            const total = originalCards.length;
-            if (index <= 0) {
-                // salto invisível para o clone do final, depois anima até o original
-                index = total;
-                applyTransform(false);
-                requestAnimationFrame(() => {
-                    index = total - 1;
-                    applyTransform(true);
-                });
-            } else {
-                index -= 1;
-                applyTransform(true);
-            }
-        }
+            if (isAnimating || isDragging) return;
+            isAnimating = true;
+            // Traz o último card para o início e parte de uma posição
+            // "fora da tela" à esquerda, animando até a posição de repouso.
+            track.insertBefore(track.lastElementChild, track.firstElementChild);
+            const step = getStepWidth();
+            track.style.transition = 'none';
+            track.style.transform = `translate3d(${-step}px, 0, 0)`;
+            void track.offsetWidth; // força reflow
 
-        // Quando chegar ao final dos originais + 1, faz o reset invisível
-        track.addEventListener('transitionend', (e) => {
-            if (e.propertyName !== 'transform') return;
-            const total = originalCards.length;
-            if (index >= total) {
-                index = 0;
-                applyTransform(false);
-            }
-        });
+            requestAnimationFrame(() => {
+                track.style.transition = '';
+                track.style.transform = 'translate3d(0, 0, 0)';
+            });
+
+            track.addEventListener('transitionend', function onEnd(e) {
+                if (e.propertyName !== 'transform') return;
+                track.removeEventListener('transitionend', onEnd);
+                isAnimating = false;
+            });
+        }
 
         function startAuto() {
             stopAuto();
@@ -207,6 +203,7 @@
 
         // ---- Touch / Pointer swipe ----
         function onPointerDown(e) {
+            if (isAnimating) return;
             isDragging = true;
             dragStartX = e.clientX;
             dragDeltaX = 0;
@@ -218,9 +215,7 @@
         function onPointerMove(e) {
             if (!isDragging) return;
             dragDeltaX = e.clientX - dragStartX;
-            const step = getStepWidth();
-            const offset = -index * step + dragDeltaX;
-            track.style.transform = `translate3d(${offset}px, 0, 0)`;
+            track.style.transform = `translate3d(${dragDeltaX}px, 0, 0)`;
         }
 
         function onPointerUp() {
@@ -230,13 +225,15 @@
 
             if (Math.abs(dragDeltaX) > SWIPE_THRESHOLD) {
                 if (dragDeltaX < 0) {
+                    resetPosition(false);
                     next();
                 } else {
+                    resetPosition(false);
                     prev();
                 }
             } else {
                 // volta para a posição atual
-                applyTransform(true);
+                resetPosition(true);
             }
             dragDeltaX = 0;
             // retoma o auto-play após o gesto
@@ -269,12 +266,12 @@
         window.addEventListener('resize', () => {
             if (resizeTimer) window.clearTimeout(resizeTimer);
             resizeTimer = window.setTimeout(() => {
-                applyTransform(false);
+                if (!isDragging && !isAnimating) resetPosition(false);
             }, 120);
         });
 
         // Inicializa
-        applyTransform(false);
+        resetPosition(false);
         startAuto();
     })();
 })();
