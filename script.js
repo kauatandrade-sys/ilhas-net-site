@@ -110,7 +110,7 @@
         let dragStartX = 0;
         let dragDeltaX = 0;
 
-        const AUTO_INTERVAL = 2500; // ms (reduzido em 2s)
+        const AUTO_INTERVAL = 2500; // ficar de olho no tempo
         const SWIPE_THRESHOLD = 60; // px
 
         function getStepWidth() {
